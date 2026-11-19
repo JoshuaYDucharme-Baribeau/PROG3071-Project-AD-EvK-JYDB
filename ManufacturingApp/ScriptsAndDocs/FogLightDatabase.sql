@@ -1,7 +1,18 @@
 --REMOVE DB IF DESIRED
 --remember to close the console app and slnx if you are dropping the database to re-connect it
---otherwise dropping will fail
-DROP DATABASE FogLightManufacturing;
+--otherwise dropping may fail
+USE master;
+GO
+ 
+IF DB_ID('FogLightManufacturing') IS NOT NULL
+BEGIN
+    ALTER DATABASE FogLightManufacturing
+    SET SINGLE_USER
+    WITH ROLLBACK IMMEDIATE;
+ 
+    DROP DATABASE FogLightManufacturing;
+END
+GO
 
 -- Create Database
 IF DB_ID('FogLightManufacturing') IS NULL
