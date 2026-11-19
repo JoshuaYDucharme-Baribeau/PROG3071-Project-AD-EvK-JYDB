@@ -18,6 +18,9 @@ namespace ManufacturingApp
             //Call method to connect the application to the DB
 
 
+            //instantiate FogLightProduction Class
+            FogLightProduction productionControl = new FogLightProduction();
+
             //Menu display loop and function calls here
             while(running)
             {
@@ -37,9 +40,18 @@ namespace ManufacturingApp
                             break;
 
                         case '2':
-                            //call method here
-                        
+                            //manufacture a foglight
+                            try
+                            {
+                                productionControl.ManufactureFogLight();
+                            }
+                            catch (Exception)
+                            {
+                                throw;
+                            }
+
                             UserInterface.Block_program("Press any Key to return to the menu.");
+                        
                             break;
 
                         case '3':

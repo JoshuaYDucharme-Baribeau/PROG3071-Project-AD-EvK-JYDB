@@ -18,5 +18,9 @@ namespace ManufacturingApp
 
         //create the connection string
         //manage the connection
+
+        //obtain data to be displayed
+        //  (note this function should not write the lines here,
+        //  it should call a function in UIclass to print them)
     }
 }
