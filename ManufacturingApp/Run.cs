@@ -37,8 +37,22 @@ namespace ManufacturingApp
                         break;
 
                     case ConsoleKey.X:
-                        UserInterface.Display_message("\n\nExiting the application");
-                        UserInterface.Block_program("Press any Key to Exit...\n");
+
+                        //ask user for confirmation to exit
+                        UserInterface.Clear_screen();
+                        UserInterface.Display_message("Are you sure you want to exit (Y/N)?");
+                        user_input = Console.ReadKey().Key;
+
+                        if (user_input == ConsoleKey.Y)
+                        {
+                            running = false; //change the main menu flag and exit the loop
+                            UserInterface.Clear_screen();
+                        }
+                        // i.e. if input is not Y or y
+                        //else
+                        //{
+                        //    //do nothing to continue looping to the menu
+                        //}
                         break;
 
                     default:

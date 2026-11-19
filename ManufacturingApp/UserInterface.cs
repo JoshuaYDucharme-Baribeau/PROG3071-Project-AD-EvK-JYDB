@@ -1,13 +1,29 @@
-﻿
+﻿/*
+ * FILE             : UserInterface.cs
+ * PROJECT          : ADV SQL Project
+ * PROGRAMMERS      : Deland, A.; Ducharme-Baribeau, J.; vanKooy, E.
+ * FIRST VERSION    : November 19 2026
+ * DESCRIPTION      : C# Source file for "UserInterface.cs" containing "UserInterface" class. class for controlling the console interface and displays
+ */
 namespace ManufacturingApp
 {
+    //static class so that it doesn't need to be instantiated
     static internal class UserInterface
     {
 
-
+        /*
+         * METHOD       : Display_menu
+         * 
+         * DESCRIPTION  : displays the main menu of the program
+         * 
+         * PARAMETERS   : NONE
+         * 
+         * RETURNS      : NOTHING
+         */
         internal static void Display_menu()
         {
             Clear_screen(); //clear the screen before displaying anything
+
             //Main menu's WriteLine. Concatenated for code readability. Displays almost exactly as coded.
             Console.WriteLine
                 (
