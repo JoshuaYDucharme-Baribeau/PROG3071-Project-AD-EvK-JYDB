@@ -15,7 +15,9 @@ namespace ManufacturingApp
     //static class so that it doesn't need to be instantiated
     static internal class DBConnector
     {
-
+        private readonly string _connectionString = 
+            "Server=localhost;Database=FogLightManufacturing;" +
+            "Trusted_Connection=True;TrustServerCertificate=True;";
         //create the connection string
         //manage the connection
 

@@ -88,5 +88,38 @@ namespace ManufacturingApp
             Console.WriteLine(message);
             return;
         }
+
+        /*
+         * METHOD       : Display_message
+         * 
+         * DESCRIPTION  : displays a regular message without blocking the program
+         * 
+         * PARAMETERS   : string opDetails  : The amounts of components left in each bin.
+         *
+         * 
+         * RETURNS      : NOTHING
+         */
+        internal static void ManufacturingSuccess(string opDetails)
+        {
+            Clear_screen();
+            Console.WriteLine("\n[SUCCESS] One foglight completed.")
+            Console.WriteLine("Details: " + opDetails);
+        }
+
+        /*
+         * METHOD       : Display_message
+         * 
+         * DESCRIPTION  : displays a regular message without blocking the program
+         * 
+         * PARAMETERS   : string errMessage   : The error to display.
+         *
+         * 
+         * RETURNS      : NOTHING
+         */
+        internal static void ManufacturingError(string errMessage)
+        {
+            Clear_screen();
+            Console.WriteLine("\n[ERROR] " + errMessage);
+        }
     }
 }
