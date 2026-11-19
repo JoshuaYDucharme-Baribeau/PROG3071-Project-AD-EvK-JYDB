@@ -40,7 +40,6 @@ namespace ManufacturingApp
                             break;
 
                         case '2':
-                            //manufacture a foglight
                             try
                             {
                                 productionControl.ManufactureFogLight();
@@ -55,7 +54,17 @@ namespace ManufacturingApp
                             break;
 
                         case '3':
-                            //call method here
+                            for (int i = 0; i < 5; i++)
+                            {
+                                try
+                                {
+                                    productionControl.ManufactureFogLight();
+                                }
+                                catch (Exception)
+                                {
+                                    throw;
+                                }
+                            }
                         
                             UserInterface.Block_program("Press any Key to return to the menu.");
                             break;
