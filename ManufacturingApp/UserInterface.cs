@@ -27,9 +27,13 @@ namespace ManufacturingApp
             //Main menu's WriteLine. Concatenated for code readability. Displays almost exactly as coded.
             Console.WriteLine
                 (
-                    "<A>n option\n" +
-                    "<D>ifferent option\n" +
-                    "E<X>it the program\n" +
+                    "1. Display Inventory Status\n" +
+                    "2. Manufacture One Fog Light\n" +
+                    "3. Manufacture Five Fog Lights\n" +
+                    "4. Restock Inventory\n" +
+                    "5. Display Production Summary\n" +
+                    "6. Display Manufacturing Logs\n" +
+                    "7. Exit\n\n" +
                     "Please choose the operation you would like to perform:\n\n"
                 );
 
@@ -64,7 +68,7 @@ namespace ManufacturingApp
          */
         internal static void Block_program(string message_prompt = "Press any key to continue...") //sets a default param to make the param optional.
         {
-            Console.WriteLine(message_prompt);
+            Console.WriteLine("\n" + message_prompt);
             Console.ReadKey();
             return;
         }
