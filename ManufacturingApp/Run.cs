@@ -23,6 +23,9 @@ namespace ManufacturingApp
             //instantiate FogLightProduction Class
             FogLightProduction productionControl = new FogLightProduction();
 
+            // instantiate dataDisplay Class
+            Display dataDisplay = new Display();
+
             //Menu display loop and function calls here
             while(running)
             {
@@ -81,14 +84,28 @@ namespace ManufacturingApp
                             UserInterface.Block_program("Press any Key to return to the menu.");
                             break;
                         case '5':
-                            //call method here
-                        
+                            try
+                            {
+                                dataDisplay.DisplayProdSum();
+                            }
+                            catch (Exception)
+                            {
+                                throw;
+                            }
+
                             UserInterface.Block_program("Press any Key to return to the menu.");
                             break;
 
                         case '6':
-                            //call method here
-                        
+                            try
+                            {
+                                dataDisplay.DisplayLogs();
+                            }
+                            catch (Exception)
+                            {
+                                throw;
+                            }
+
                             UserInterface.Block_program("Press any Key to return to the menu.");
                             break;
 
