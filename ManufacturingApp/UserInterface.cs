@@ -102,7 +102,7 @@ namespace ManufacturingApp
         internal static void ManufacturingSuccess(string opDetails)
         {
             Clear_screen();
-            Console.WriteLine("\n[SUCCESS] One foglight completed.")
+            Console.WriteLine("\n[SUCCESS] One foglight completed.");
             Console.WriteLine("Details: " + opDetails);
         }
 

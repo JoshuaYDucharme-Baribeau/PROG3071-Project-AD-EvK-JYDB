@@ -1,6 +1,6 @@
 ﻿
 Use FogLightManufacturing;
-Go;
+Go
 Create or Alter Procedure dbo.Restock
 As
 BEGIN

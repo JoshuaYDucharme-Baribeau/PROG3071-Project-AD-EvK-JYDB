@@ -15,7 +15,9 @@ namespace ManufacturingApp
             Boolean running = true; //flag for the menu loop, will terminate the loop when False
             char user_input; //using the ConsoleKeyInfo object/struct to store the key stroke for menu input
 
-            //Call method to connect the application to the DB
+            //create the database if it doesn't exist
+
+            //ensure the stored procedures if they don't exist
 
 
             //instantiate FogLightProduction Class
@@ -42,7 +44,7 @@ namespace ManufacturingApp
                         case '2':
                             try
                             {
-                                productionControl.ManufactureFogLight();
+                                productionControl.ManufactureFogLight(1);
                             }
                             catch (Exception)
                             {
@@ -56,7 +58,7 @@ namespace ManufacturingApp
                             {
                                 try
                                 {
-                                    productionControl.ManufactureFogLight();
+                                    productionControl.ManufactureFogLight(5);
                                 }
                                 catch (Exception)
                                 {
@@ -69,7 +71,7 @@ namespace ManufacturingApp
                         case '4':
                             try
                             {
-                                Addparts();
+                                productionControl.Addparts();
                             }
                             catch (Exception)
                             {

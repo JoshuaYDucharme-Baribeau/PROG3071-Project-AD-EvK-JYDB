@@ -13,11 +13,15 @@ namespace ManufacturingApp
 {
 
     //static class so that it doesn't need to be instantiated
-    static internal class DBConnector
+    internal class DBConnector
     {
-        private readonly string _connectionString = 
-            "Server=localhost;Database=FogLightManufacturing;" +
-            "Trusted_Connection=True;TrustServerCertificate=True;";
+        //const string _connectionString = 
+        //    "Server=localhost;Database=FogLightManufacturing;" +
+        //    "Trusted_Connection=True;TrustServerCertificate=True;";
+        
+        //SqlConnection dbConnection = new SqlConnection(_connectionString);
+
+
         //create the connection string
         //manage the connection
 

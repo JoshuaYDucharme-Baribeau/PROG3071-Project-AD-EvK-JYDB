@@ -6,44 +6,63 @@ namespace ManufacturingApp
 {
     internal class FogLightProduction
     {
-        public bool ManufactureFogLight()
+        const string _connectionString = 
+            "Server=localhost;Database=FogLightManufacturing;" +
+            "Trusted_Connection=True;TrustServerCertificate=True;";
+        internal bool ManufactureFogLight(int amount)
         {
-            SqlConnection conn = null;
-            SqlCommand cmd = null;
-
+            bool result = false;
+        
             try
             {
-                conn = new SqlConnection(DBConnector._connectionString);
-                cmd = new SqlCommand("dbo.ManufactureFogLight", conn);
+                using SqlConnection conn = new SqlConnection(_connectionString);
+                using SqlCommand cmd = new SqlCommand("[FogLightManufacturing].[dbo].[ManufactureFogLights]", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+
+                //create paramaters to pass between procedure and console app
+                cmd.Parameters.AddWithValue("@Quantity", amount);
+                var outputMessage = new SqlParameter("@ResultMessage", SqlDbType.VarChar, 100);
+                outputMessage.Direction = ParameterDirection.Output;
+                cmd.Parameters.Add(outputMessage);
+
+                conn.Open();
+                cmd.ExecuteNonQuery();
+
+
+
+                UserInterface.ManufacturingSuccess(outputMessage.Value?.ToString() ?? ""); // display the output message as a string
+
+                result = true;
+            }
+            catch (SqlException ex)
+            {
+                UserInterface.ManufacturingError(ex.Message);
+                result = false;
+            }
+            return result;
+        }
+
+        internal void Addparts()
+        {
+            try
+            {
+                using SqlConnection conn = new SqlConnection(_connectionString);
+                using SqlCommand cmd = new SqlCommand("dbo.Restock", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 conn.Open();
                 cmd.ExecuteNonQuery();
 
                 UserInterface.ManufacturingSuccess(""); // Some string
-
-                return true;
             }
             catch (SqlException ex)
             {
-                UserInterface.ManufacturingError("", ex.Message);
-                return false;
+                UserInterface.ManufacturingError(ex.Message);
             }
-            finally
-            {
-                if (cmd != null)
-                {
-                    cmd.Dispose();
-                }
-                if (conn != null)
-                {
-                    if (conn.State != ConnectionState.Closed)
-                    {
-                        conn.Close();
-                    }
-                    conn.Dispose();
-                }    
-            }
+            return;
         }
+
+
     }
 }
