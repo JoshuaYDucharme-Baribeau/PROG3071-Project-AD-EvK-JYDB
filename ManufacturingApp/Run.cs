@@ -50,9 +50,7 @@ namespace ManufacturingApp
                             }
 
                             UserInterface.Block_program("Press any Key to return to the menu.");
-                        
                             break;
-
                         case '3':
                             for (int i = 0; i < 5; i++)
                             {
@@ -68,13 +66,18 @@ namespace ManufacturingApp
                         
                             UserInterface.Block_program("Press any Key to return to the menu.");
                             break;
-
                         case '4':
-                            //call method here
-                        
+                            try
+                            {
+                                Addparts();
+                            }
+                            catch (Exception)
+                            {
+                                throw;
+                            }
+
                             UserInterface.Block_program("Press any Key to return to the menu.");
                             break;
-
                         case '5':
                             //call method here
                         

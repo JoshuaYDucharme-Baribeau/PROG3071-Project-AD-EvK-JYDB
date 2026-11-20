@@ -14,7 +14,7 @@ namespace ManufacturingApp
             try
             {
                 conn = new SqlConnection(DBConnector._connectionString);
-                cmd = new SqlCommand("sp_ManufactureFogLight", conn);
+                cmd = new SqlCommand("dbo.ManufactureFogLight", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 conn.Open();
