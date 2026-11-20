@@ -2,44 +2,51 @@
 Use FogLightManufacturing;
 Go
 Create or Alter Procedure dbo.Restock
+    @ResultMessage VARCHAR(255) = NULL OUTPUT
 As
-BEGIN
-
-	-- Now we gotta populate each InventoryBin table with the initial quantities provided in assignment instructions
+	Set NOCOUNT On;
 	
-	INSERT INTO InventoryBin (ComponentID, BinName, BinLocation, CurrentQuantity)
-		SELECT ComponentID, 'Harness Bin', 'WarehouseA', 1
-		FROM Component
-		WHERE ComponentName = 'Harness';
+    -- Get each of the ComponentID's for the 6 parts of a foglight
+    DECLARE @HarnessID INT = (SELECT ComponentID FROM dbo.Component WHERE ComponentName = 'Harness');
+    DECLARE @ReflectorID INT = (SELECT ComponentID FROM dbo.Component WHERE ComponentName = 'Reflector');
+    DECLARE @HousingID INT = (SELECT ComponentID FROM dbo.Component WHERE ComponentName = 'Housing');
+    DECLARE @LensID INT = (SELECT ComponentID FROM dbo.Component WHERE ComponentName = 'Lens');
+    DECLARE @BulbID INT = (SELECT ComponentID FROM dbo.Component WHERE ComponentName = 'Bulb');
+    DECLARE @BezelID INT = (SELECT ComponentID FROM dbo.Component WHERE ComponentName = 'Bezel');
 
+    BEGIN TRY
+        BEGIN TRANSACTION;
 
-	INSERT INTO InventoryBin (ComponentID, BinName, BinLocation, CurrentQuantity)
-		SELECT ComponentID, 'Reflector Bin', 'WarehouseB', 1
-		FROM Component
-		WHERE ComponentName = 'Reflector';
+        -- Add +1 to the existing quantity in each component bin
+        UPDATE dbo.InventoryBin
+        SET CurrentQuantity = CurrentQuantity + 1,
+            LastUpdated = GETDATE()
+        WHERE ComponentID IN (@HarnessID, @ReflectorID, @HousingID, @LensID, @BulbID, @BezelID);
 
+        -- Record the +1 added to each bin in RestockHistory
+        INSERT INTO dbo.RestockHistory (BinID, QuantityAdded)
+        SELECT BinID, 1
+        FROM dbo.InventoryBin
+        WHERE ComponentID IN (@HarnessID, @ReflectorID, @HousingID, @LensID, @BulbID, @BezelID);
 
-	INSERT INTO InventoryBin (ComponentID, BinName, BinLocation, CurrentQuantity)
-		SELECT ComponentID, 'Housing Bin', 'WarehouseC', 1
-		FROM Component
-		WHERE ComponentName = 'Housing';
+        -- Log replenishment
+        SET @ResultMessage = 'Successfully restocked +1 unit to each component bin.';
 
-	INSERT INTO InventoryBin (ComponentID, BinName, BinLocation, CurrentQuantity)
-		SELECT ComponentID, 'Lens Bin', 'WarehouseD', 1
-		FROM Component
-		WHERE ComponentName = 'Lens';
+        INSERT INTO dbo.OperationLogs (EventType, LogDescription)
+        VALUES ('Inventory Replenishment', @ResultMessage);
 
-	INSERT INTO InventoryBin (ComponentID, BinName, BinLocation, CurrentQuantity)
-		SELECT ComponentID, 'Bulb Bin', 'WarehouseE', 1
-		FROM Component
-		WHERE ComponentName = 'Bulb';
+        COMMIT TRANSACTION;
+        RETURN 0;
+    END TRY
+    BEGIN CATCH
+        IF @@TRANCOUNT > 0
+            ROLLBACK TRANSACTION;
 
-	INSERT INTO InventoryBin (ComponentID, BinName, BinLocation, CurrentQuantity)
-		SELECT ComponentID, 'Bezel Bin', 'WarehouseF', 1
-		FROM Component
-		WHERE ComponentName = 'Bezel';
-		
-		INSERT INTO RestockHistory (BinID, QuantityAdded)
-		SELECT BinID, CurrentQuantity
-		FROM InventoryBin;
-END
+        SET @ResultMessage = 'Error: ' + ERROR_MESSAGE();
+
+        INSERT INTO dbo.OperationLogs (EventType, LogDescription)
+        VALUES ('Restock Failure', @ResultMessage);
+
+        RETURN -2;
+    END CATCH
+Go
