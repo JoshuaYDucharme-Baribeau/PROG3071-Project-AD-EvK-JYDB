@@ -9,10 +9,8 @@ namespace ManufacturingApp
         const string _connectionString = 
             "Server=localhost;Database=FogLightManufacturing;" +
             "Trusted_Connection=True;TrustServerCertificate=True;";
-        internal bool ManufactureFogLight(int amount)
+        internal void ManufactureFogLight(int amount)
         {
-            bool result = false;
-        
             try
             {
                 using SqlConnection conn = new SqlConnection(_connectionString);
@@ -20,7 +18,7 @@ namespace ManufacturingApp
                 cmd.CommandType = CommandType.StoredProcedure;
 
 
-                //create paramaters to pass between procedure and console app
+                // Create paramaters to pass between procedure and console app
                 cmd.Parameters.AddWithValue("@Quantity", amount);
                 var outputMessage = new SqlParameter("@ResultMessage", SqlDbType.VarChar, 100);
                 outputMessage.Direction = ParameterDirection.Output;
@@ -38,9 +36,7 @@ namespace ManufacturingApp
             catch (SqlException ex)
             {
                 UserInterface.ManufacturingError(ex.Message);
-                result = false;
             }
-            return result;
         }
 
         internal void Addparts()
@@ -48,13 +44,18 @@ namespace ManufacturingApp
             try
             {
                 using SqlConnection conn = new SqlConnection(_connectionString);
-                using SqlCommand cmd = new SqlCommand("dbo.Restock", conn);
+                using SqlCommand cmd = new SqlCommand("[FogLightmanufacturing].[dbo].[Restock]", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
+
+                // Params to pass between app & procedure
+                var outputMessage = new SqlParameter("@ResultMessage", SqlDbType.VarChar, 100);
+                outputMessage.Direction = ParameterDirection.Output;
+                cmd.Parameters.Add(outputMessage);
 
                 conn.Open();
                 cmd.ExecuteNonQuery();
 
-                UserInterface.ManufacturingSuccess(""); // Some string
+                UserInterface.ManufacturingSuccess(outputMessage.Value?.ToString() ?? ""); // Some string
             }
             catch (SqlException ex)
             {
@@ -62,7 +63,5 @@ namespace ManufacturingApp
             }
             return;
         }
-
-
     }
 }
