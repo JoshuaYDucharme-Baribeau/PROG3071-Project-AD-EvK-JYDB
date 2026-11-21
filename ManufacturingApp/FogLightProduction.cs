@@ -31,12 +31,12 @@ namespace ManufacturingApp
 
                 UserInterface.ManufacturingSuccess(outputMessage.Value?.ToString() ?? ""); // display the output message as a string
 
-                result = true;
             }
             catch (SqlException ex)
             {
                 UserInterface.ManufacturingError(ex.Message);
             }
+            return;
         }
 
         internal void Addparts()
